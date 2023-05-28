@@ -1,0 +1,100 @@
+pip install refinitiv-dataplatform
+pip install eikon
+
+# Stocks abrufen
+df, e = ek.get_data('AAPL.O', ['TR.CLOSEPRICE.date', 'TR.CLOSEPRICE'], {'SDate': '2022-01-01', 'EDate': '2022-04-30', 'Frq': 'D'})
+
+# Daily Returns/ % Chg
+df['daily_return'] = df['Close Price'].pct_change()
+df
+	Instrument	Date	Close Price	daily_return
+0	AAPL.O	2022-01-03T00:00:00Z	182.01	<NA>
+1	AAPL.O	2022-01-04T00:00:00Z	179.7	-0.012692
+2	AAPL.O	2022-01-05T00:00:00Z	174.92	-0.0266
+3	AAPL.O	2022-01-06T00:00:00Z	172.0	-0.016693
+4	AAPL.O	2022-01-07T00:00:00Z	172.17	0.000988
+...	...	...	...	...
+77	AAPL.O	2022-04-25T00:00:00Z	162.88	0.006737
+78	AAPL.O	2022-04-26T00:00:00Z	156.8	-0.037328
+79	AAPL.O	2022-04-27T00:00:00Z	156.57	-0.001467
+80	AAPL.O	2022-04-28T00:00:00Z	163.64	0.045156
+81	AAPL.O	2022-04-29T00:00:00Z	157.65	-0.036605
+
+
+# Shanghei Composite
+df_SSEC, err = ek.get_data('.SSEC', ['TR.CLOSEPRICE'], {'SDate': '2022-01-01', 'EDate': '2022-04-30', 'Frq': 'D'})
+
+print(df_SSEC.columns)
+
+df_SSEC['daily_return'] = df_SSEC['Close Price'].pct_change()
+
+print(df_SSEC.head())
+
+Index(['Instrument', 'Close Price'], dtype='object')
+  Instrument  Close Price  daily_return
+0      .SSEC    3639.7754          <NA>
+1      .SSEC    3632.3289     -0.002046
+2      .SSEC    3595.1761     -0.010228
+3      .SSEC    3586.0792      -0.00253
+4      .SSEC    3579.5427     -0.
+
+# NASDAQ 100
+df_NDX, err = ek.get_data('.NDX', ['TR.CLOSEPRICE'], {'SDate': '2022-01-01', 'EDate': '2022-04-30', 'Frq': 'D'})
+print(df.columns)
+
+Index(['Instrument', 'Close Price', 'High Price', 'Low Price', 'daily_return'], dtype='object')
+
+df_NDX['daily_return'] = df['Close Price'].pct_change()
+
+print(df_NDX.head())
+
+  Instrument  Close Price  daily_return
+0       .NDX    16501.768          <NA>
+1       .NDX    16279.732     -0.013455
+2       .NDX    15771.775     -0.031202
+3       .NDX    15765.358     -0.000407
+4       .NDX    15592.187     -0.010984
+
+#STOXX
+df_SSEC, err = ek.get_data(['.BVSP'], ['TR.CLOSEPRICE'], {'SDate': '2022-01-01', 'EDate': '2022-04-30', 'Frq': 'D'})
+print(df_SSEC.columns)
+df_SSEC['daily_return'] = df_SSEC['Close Price'].pct_change()
+print(df_SSEC.head)
+
+Index(['Instrument', 'Close Price'], dtype='object')
+<bound method NDFrame.head of    Instrument  Close Price  daily_return
+0       .BVSP    103921.59          <NA>
+1       .BVSP    103513.64     -0.003926
+2       .BVSP    101005.64     -0.024229
+3       .BVSP    101561.05      0.005499
+4       .BVSP    102719.47      0.011406
+..        ...          ...           ...
+80      .BVSP    110684.95     -0.003534
+81      .BVSP    108212.86     -0.022334
+82      .BVSP    109349.37      0.010503
+83      .BVSP    109918.97      0.005209
+84      .BVSP    107876.16     -0.018585
+
+[85 rows x 3 columns]>
+
+# Kombiniert 10 values
+df_SSEC, err = ek.get_data(['.STOXX50E','.NDX','SSMI','.SSEC','.FTSE','.GDAXI','.HSO','.FCHI','.IBRX','.RUT','.BVSP'], ['TR.CLOSEPRICE'], {'SDate': '2022-01-01', 'EDate': '2022-04-30', 'Frq': 'D'})
+print(df_SSEC.columns)
+df_SSEC['daily_return'] = df_SSEC['Close Price'].pct_change()
+print(df_SSEC.head)
+
+Index(['Instrument', 'Close Price'], dtype='object')
+<bound method NDFrame.head of     Instrument  Close Price  daily_return
+0    .STOXX50E      4331.82          <NA>
+1    .STOXX50E      4367.62      0.008264
+2    .STOXX50E      4392.15      0.005616
+3    .STOXX50E      4324.81     -0.015332
+4    .STOXX50E      4305.83     -0.004389
+..         ...          ...           ...
+762      .BVSP    110684.95     -0.003534
+763      .BVSP    108212.86     -0.022334
+764      .BVSP    109349.37      0.010503
+765      .BVSP    109918.97      0.005209
+766      .BVSP    107876.16     -0.018585
+
+[767 rows x 3 columns]>
