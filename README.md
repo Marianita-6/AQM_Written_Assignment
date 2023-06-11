@@ -1,1 +1,0 @@
-# AQM_Written_Assignment
